@@ -1,9 +1,8 @@
 'use strict';
-// class for board
-// 5x5 0-5
-// Assumes origin 0
 
-export class board {
+// specify board
+
+export default class board {
     constructor(x = 5, y = 5) {
         this.x = x; // max X
         this.y = y; // max Y
