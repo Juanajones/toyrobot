@@ -1,30 +1,69 @@
 'use strict';
 
 import robot from "./modules/objects/robot.mjs";
-import board from "./modules/objects/board.mjs";
+import surface from "./modules/objects/surface.mjs";
 import input_handler from "./modules/commands/input-handler.mjs";
 
-// should these be in the initialisation task?
-const robo1 = new robot([2, 2, 'NORTH']);   // instantiate a new robot
-const board1 = new board(4, 4);             // instantiate a new board
+let object;
+let table;
 
+// thing that does the things
+const run = function(tableElement, object, table) {
+    document.getElementById("execute").addEventListener("click", () => {
+    const textInput = document.getElementById("input").value.toUpperCase();
+    console.log(`Text input: ${textInput}`);
 
-// funny you could get things from down reference chain
-// console.log(input_handler.movement().dirs().dirMap());
+    try {
+        const inputParts = textInput.split(/[,\s]+/);
+        // console.log(inputParts, object, table);
+        
+        const runOutput = input_handler.process(inputParts, object, table);
 
+        update(tableElement, object);
+        object.reportPosition();
 
-// let command;
-// // while loop is to repeatedly prompt user
-// while (command != 'exit') {
-//     // Prompt user for input
-//     command = prompt('Please enter a command:');
+    } catch (error) {
+        console.error(error);
+    }
+    })
+};
 
-//     // trigger event handler based on current input
-//     run(command);
+// func that draws the things
+let drawSurface = function(surfaceElement, position, facing) {
+    for (let y = 4; y >= 0; y--) {
+        for (let x = 0; x < 5; x++) {
+            const cell = document.createElement("div");
+            cell.classList.add("cell");
+            cell.textContent = `${x},${y}`;
+            surfaceElement.appendChild(cell);
 
-//     // turn below on for auto-reporting
-//     if (command != 'exit') { report(); };
-// };
+            if (position && position.x === x && position.y === y) {
+                cell.classList.add("robot");
+                cell.classList.add(facing.toLowerCase());
+            }
+        }
+    }
+};
 
-// // Exit statement to stop prompts
-// if (command === 'exit') { console.log('Exiting') };
+// thing to initiate
+const init = function() {
+    let table = new surface(4,4);
+    let object = new robot();
+
+    const tableElement = document.getElementById("table");
+
+    run(tableElement, object, table);
+    
+    drawSurface(tableElement);
+};
+
+// on load initiate
+document.addEventListener("DOMContentLoaded", () => {
+    init();
+});
+
+// thing to update other things
+const update = function (tableElement, robot) {
+    tableElement.innerHTML = "";
+    drawSurface(tableElement, robot.position, robot.facing);
+};

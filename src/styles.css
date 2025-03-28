@@ -1,0 +1,59 @@
+body {
+    background-color: lightblue;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    color: rgb(91, 91, 112);
+    margin-left: 20px;
+}
+
+h2 {
+    color: slategrey;
+    margin-left: 20px;
+}
+
+textarea{
+    width: 100%;
+    height: 100px;
+}
+
+button{
+    margin-top: 10px;
+    padding: 5px 100px;
+    width: 100%;
+}
+
+.container{
+    display: flex;
+    gap: 20px;
+    align-content: center;
+    justify-content: center;
+    /* border: 1px solid gray; */
+}
+.input-container{
+    flex: 1;
+}
+.table-container{
+    flex: 1;
+}
+.table {
+    display: grid;
+    grid-template-columns: repeat(5, 50px);
+    grid-template-rows: repeat(5, 50px);
+    gap: 2px;
+    margin-top: 20px;
+    justify-content: center;
+}
+.cell{
+    border: 1px solid darkgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.robot{
+    background-color: blue;
+    position: relative;
+}

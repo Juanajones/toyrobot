@@ -1,71 +1,43 @@
 'use strict';
 
-import dirs from "../../config/dirs.mjs";
+import directions from "../../config/directions.mjs";
+
+// is this dumb?
+// should this just be bundled into the object?
+// in future could use this to move objects differently/handle multiple objects/move the surface itself instead
 
 // movement handler
 // 1. placement
 // 2. movement
 // 3. rotation
 
+// assume object currently on a surface
+// do we need to specify surface?
+// do we then need to get surface size to prevent falls?
+// do we need movement size/duration/length?
+
 export default class movement {
-    constructor(obj, dir) {
-        [this.obj, this.dir] = [obj, dir];
-    }
+    constructor() {}
 
-    static dirs() {
-        return dirs;
-    }
+    // move object in direction
+    static move(object) {
+        // get array(ex. [-1, x]) from Increment map matching curr direction
+        // let incrementResult = increment.get(directions.indexOf(this.facing));
+        let incrementResult = directions.get(object.facing);
 
-    // move obj in dir
-    getBounds() {
-        console.log(`Current board has bounds: X: 0 to ${this.x}, Y: 0 to ${this.Y}`);
-    }
+        // <call validation on current surface here>
+
+        // ex. WEST === robot.x + -1
+        this[incrementResult[1]] = Math.min(
+            Math.max(
+                this[incrementResult[1]] + eval(incrementResult[2]), 0
+            ), 4
+        );
+    };
+
+    static rotate(object, direction){
+        let rotation = direction === 'RIGHT' ? 1 : direction === "LEFT" ? -1 : 0;
+        const newDirectionIndex = (directions.get(this.direction)[0] + rotation + 4) % 4;
+        this.facing = directions.keys()[newDirectionIndex]; // this doesn't work!
+    };
 };
-
-
-// Place robot on table
-// const place = function (loc) {
-//     // destructured assignment of variables
-//     let [x, y, dir] = loc;
-//     // assign Robot object values to placement values
-//     [robot.x, robot.y, robot.dir] = [+x, +y, dir];
-// };
-
-
-// Move robot in facing direction
-// const move = function () {
-//     // get array(ex. [-1, x]) from Increment map matching curr direction
-//     // let incrementResult = increment.get(dirs.indexOf(robot.dir));
-//     let incrementResult = dirs.get(robot.dir);
-
-//     // Note: Math.max/min below are for bounds
-//     // min: ex. robot.y <= 4 ? 4
-//     // max: ex. robot.x >= 0 ? 0
-
-//     // Set relevant robot x/y value to Evaluated value from map
-//     // ex. WEST === robot.x + -1
-//     robot[incrementResult[1]] = Math.min(
-//         Math.max(
-//             robot[incrementResult[1]] + eval(incrementResult[2]), 0
-//         ), 4
-//     );
-// };
-
-
-// Rotate robot per input dir
-// const rotate = function (sindex) {
-//     // sindex == sinistral/dextral == left/right
-
-//     // Rotation value per array [1, 2, 3, 4]
-//     // Right increments ->, Left decrements <-, else stay
-//     let rot = sindex === 'RIGHT' ? 1 : sindex === "LEFT" ? -1 : 0;
-
-//     // Get index of curr dir -> increment/decrement per rot value
-//     // ex. turn RIGHT(+1) from EAST(2): 
-//     // (2 + 1 + 4) % 4 = (7 / 4) = 1 R 3
-//     // New dir = remainder of above = 3 (SOUTH)
-//     const newDirIndex = (dirs.get(robot.dir)[0] + rot + 4) % 4;
-
-//     // set new robot direction
-//     robot.dir = dirs.keys()[newDirIndex]; // this doesn't work!
-// };
